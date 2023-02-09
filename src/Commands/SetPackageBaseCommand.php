@@ -16,6 +16,8 @@ class SetPackageBaseCommand extends Command
         $this->copy();
 
         $this->env();
+
+        $this->addPackages();
     }
 
     private function composer(): void
@@ -67,5 +69,17 @@ class SetPackageBaseCommand extends Command
         }
 
         file_put_contents($env, implode('', $content));
+    }
+
+    private function addPackages(): void
+    {
+        shell_exec('npm install');
+
+        shell_exec('composer require bakgul/laravel-dump-server --dev');
+
+        $this->call('vendor:publish', [
+            '--provider' => 'Bakgul\LaravelDumpServer\LaravelDumpServerServiceProvider',
+            '--tag' => 'config'
+        ]);
     }
 }
