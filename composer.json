@@ -1,0 +1,27 @@
+{
+  "name": "bakgul/package-base",
+  "description": "A package that I use while package developer.",
+  "authors": [
+    {
+      "name": "Bulent Akgul",
+      "email": "bulent.akgul@me.com"
+    }
+  ],
+  "license": "MIT",
+  "require": {
+    "php": "^8.0.2"
+  },
+  "autoload": {
+    "psr-4": {
+      "Bakgul\\PackageBase\\": "src/",
+      "Bakgul\\PackageBase\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Bakgul\\PackageBase\\PackageBaseServiceProvider"
+      ]
+    }
+  }
+}
