@@ -10,10 +10,11 @@ class SetPackageBaseCommand extends Command
     protected $description = '';
 
     private $stubs;
+    private $package;
 
     public function handle()
     {
-        $this->stubs();
+        $this->props();
 
         $this->composer();
 
@@ -24,12 +25,30 @@ class SetPackageBaseCommand extends Command
         $this->addPackages();
     }
 
+    private function props(): void
+    {
+        $this->stubs();
+
+        $this->package();
+    }
+
     private function stubs(): void
     {
         $this->stubs = implode(
             DIRECTORY_SEPARATOR,
             [__DIR__, '..', '..', 'stubs']
         );
+    }
+
+    private function package(): void
+    {
+        foreach (file(base_path('package/composer.json')) as $line) {
+            if (str_contains($line, '"name": "bakgul')) {
+                $name = trim(str_replace(['"', ','], '', explode('/', $line)[1]));
+            }
+        }
+
+        $this->package = $name ?? 'package-name';
     }
 
     private function copy(): void
@@ -57,7 +76,7 @@ class SetPackageBaseCommand extends Command
 
     private function setComposerContent(): array
     {
-        $package = $this->packageName();
+
 
         $composer = [];
 
@@ -68,7 +87,7 @@ class SetPackageBaseCommand extends Command
 
             if ($key == 'license') {
                 $composer['repositories'] = [
-                    $package => [
+                    $this->package => [
                         'type' => 'path',
                         'url' => 'package',
                         'options' => [
@@ -79,24 +98,13 @@ class SetPackageBaseCommand extends Command
             }
 
             if ($key == 'require-dev') {
-                $composer[$key]["bakgul/{$package}"] = '@dev';
+                $composer[$key]["bakgul/{$this->package}"] = '@dev';
 
                 ksort($composer[$key]);
             }
         }
 
         return $composer;
-    }
-
-    private function packageName(): string
-    {
-        foreach (file(base_path('package/composer.json')) as $line) {
-            if (str_contains($line, '"name": "bakgul')) {
-                return trim(str_replace(['"', ','], '', explode('/', $line)[1]));
-            }
-        }
-
-        return 'package-name';
     }
 
     private function env(): void
@@ -116,6 +124,8 @@ class SetPackageBaseCommand extends Command
     private function addPackages(): void
     {
         shell_exec('npm install');
+
+        if ($this->package == 'laravel-dump-server') return;
 
         shell_exec('composer require bakgul/laravel-dump-server --dev');
 
