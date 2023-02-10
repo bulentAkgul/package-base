@@ -55,7 +55,7 @@ class SetPackageBaseCommand extends Command
     {
         copy("{$this->stubs}/phpunit.stub", base_path('phpunit.xml'));
         copy("{$this->stubs}/vite.stub", base_path('vite.config.js'));
-        copy("{$this->stubs}/test-case.stub", base_path('package/tests/TestCase.php'));
+        copy("{$this->stubs}/test-case.stub", base_path('tests/TestCase.php'));
     }
 
     private function composer(): void
