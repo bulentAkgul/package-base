@@ -1,6 +1,6 @@
 <?php
 
-namespace Bakgul\LaravelHelpers\Tests;
+namespace Tests;
 
 use Bakgul\LaravelDumpServer\Concerns\HasDumper;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
