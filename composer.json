@@ -1,6 +1,6 @@
 {
   "name": "bakgul/package-base",
-  "description": "A package that I use while package developer.",
+  "description": "A package that I use to start package development.",
   "authors": [
     {
       "name": "Bulent Akgul",
