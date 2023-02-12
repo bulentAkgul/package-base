@@ -128,6 +128,7 @@ class SetPackageBaseCommand extends Command
         if ($this->package == 'laravel-dump-server') return;
 
         shell_exec('composer require bakgul/laravel-dump-server --dev');
+        shell_exec('composer require bakgul/laravel-tests-to-readme --dev');
 
         $this->call('vendor:publish', [
             '--provider' => 'Bakgul\LaravelDumpServer\LaravelDumpServerServiceProvider',

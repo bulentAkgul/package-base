@@ -3,8 +3,10 @@
 namespace Tests;
 
 use Bakgul\LaravelDumpServer\Concerns\HasDumper;
+use Bakgul\LaravelTestsToReadme\ToReadme;
 use Illuminate\Foundation\Testing\LazilyRefreshDatabase;
 use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+
 
 abstract class TestCase extends BaseTestCase
 {
@@ -20,5 +22,13 @@ abstract class TestCase extends BaseTestCase
     public function tearDown(): void
     {
         parent::tearDown();
+    }
+    
+    protected function toReadme(array $props): void
+    {
+        (new ToReadme([
+            'message' => '',
+            ...$props
+        ]))->write();
     }
 }
